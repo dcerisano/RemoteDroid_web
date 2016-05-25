@@ -591,8 +591,8 @@
       },
       onInitWebGL: function () {
         try {
-          this.gl = this.canvas.getContext("experimental-webgl");
-        } catch(e) {}
+          this.gl = this.canvas.getContext("webgl");
+        } catch(e) { console.log(e);}
 
         if (!this.gl) {
           error("Unable to initialize WebGL. Your browser may not support it.");
