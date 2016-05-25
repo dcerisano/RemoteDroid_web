@@ -20,9 +20,8 @@ p.decode(<binary>);
 
  */
 
-var skip = false;
 
-var rate  =  window.performance.now();
+
 
 //universal module definition
 (function (root, factory) {
@@ -66,6 +65,8 @@ var rate  =  window.performance.now();
 		this._config.workerFile = this._config.workerFile || "Decoder.js";
 
 		var webgl = "auto";
+
+
 		if (this._config.webgl === true){
 			webgl = true;
 		}else if (this._config.webgl === false){
@@ -121,9 +122,6 @@ var rate  =  window.performance.now();
 			self.webGLCanvas.VTexture.fill(buffer.subarray(lumaSize + chromaSize, lumaSize + 2 * chromaSize));
 			self.webGLCanvas.drawScene();
 
-			skip = false;
-			var t =  window.performance.now()-rate;
-			console.log("rate = "+t);
 
 		};
 
@@ -184,14 +182,12 @@ var rate  =  window.performance.now();
 				//var copyU8 = new Uint8Array(parData.length);
 				//copyU8.set( parData, 0, parData.length );
 				//worker.postMessage(copyU8.buffer, [copyU8.buffer]); // Send data to our worker.
-				if (!skip)
-				{
-					skip = true;
-					rate =  window.performance.now();
+
+				
+
 					worker.postMessage(parData.buffer, [parData.buffer]); // Send data to our worker.
-				}
-				else
-					console.log("skip");
+				
+	
 			};
 
 		}else{

@@ -36,5 +36,4 @@ RawRenderer.prototype.onDecodeMessage = function(data) {
 
 	var array = toUint8Array(data);
 	this.player.decode(array);
-	skip = false;
 };
