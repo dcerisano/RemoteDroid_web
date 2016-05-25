@@ -1,58 +1,60 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>RemoteDroid Web Client</title>
-        <link type="text/css" href="styles.css" rel="stylesheet" />
-        <script src="jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="YUVWebGLCanvas.js"></script>
-        <script type="text/javascript" src="Player.js"></script>
-        <script type="text/javascript" src="Decoder.js"></script>
-        <script type="text/javascript" src="raw.h264.js"></script>
+<head>
+<title>RemoteDroid Web Client</title>
+<link type="text/css" href="styles.css" rel="stylesheet" />
+<script src="jquery/jquery.min.js"></script>
+<script type="text/javascript" src="YUVWebGLCanvas.js"></script>
+<script type="text/javascript" src="Player.js"></script>
+<script type="text/javascript" src="Decoder.js"></script>
+<script type="text/javascript" src="raw.h264.js"></script>
 
-       <!-- <script src="jquery/jquery-ui.js"></script> -->
-    </head>
-    <script type="text/javascript">
-        var ws;
-        $(document).ready(function(){
-            var chachedUrl = localStorage['url'] || "";
-            $('#addressInput').val(chachedUrl);
-            $('#stopButton').click(function() {
-                if (typeof ws !== "undefined") {
-                    ws.close();
-                } else {
-                    console.log("Start a websocket connection first.");
-                }
-            });
-        });
+<!-- <script src="jquery/jquery-ui.js"></script> -->
+</head>
+<script type="text/javascript">
+	var ws;
 
-        function startWebSocketClient() {
-            var url = $('#addressInput').val();
-            localStorage['url'] = url;
-            console.log("Creating websocket connection");
-            ws = new WebSocket("ws://" + url);
-            ws.binaryType = "arraybuffer";
-            var rawRenderer;
+	$(document).ready(function() {
+		var chachedUrl = localStorage['url'] || "";
+		$('#addressInput').val(chachedUrl);
+		$('#stopButton').click(function() {
+			if (typeof ws !== "undefined") {
+				ws.close();
+			} else {
+				console.log("Start a websocket connection first.");
+			}
+		});
+	});
 
-            ws.onopen = function(event) {
-                console.log("connected");
-                rawRenderer = new RawRenderer(true);
-                $('body').append(rawRenderer.getCanvas());
-            };
+	function startWebSocketClient() {
+		var url = $('#addressInput').val();
+		localStorage['url'] = url;
+		console.log("Creating websocket connection");
+		ws = new WebSocket("ws://" + url);
+		ws.binaryType = "arraybuffer";
+		var rawRenderer;
 
-            ws.onmessage = function(event) {
-                    rawRenderer.render(event.data);
-            };
+		ws.onopen = function(event) {
+			console.log("connected");
+			rawRenderer = new RawRenderer(true);
+			$('body').append(rawRenderer.getCanvas());
+		};
 
-            ws.onclose = function() {
-                console.log("disconnected");
-            };
-        };
-        
-        
-    </script>
-    <body>
-        <input id="addressInput" type="text" value="" ></input>
-        <button id="startButton" type="button" onclick="startWebSocketClient()">Start WebSocket</button>
-        <button id="stopButton" type="button">Stop WebSocket</button>
-    </body>
+		ws.onmessage = function(event) {
+
+			rawRenderer.render(event.data);
+
+		};
+
+		ws.onclose = function() {
+			console.log("disconnected");
+		};
+	};
+</script>
+<body>
+	<input id="addressInput" type="text" value=""></input>
+	<button id="startButton" type="button" onclick="startWebSocketClient()">Start
+		WebSocket</button>
+	<button id="stopButton" type="button">Stop WebSocket</button>
+</body>
 </html>
