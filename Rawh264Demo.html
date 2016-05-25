@@ -4,9 +4,11 @@
         <title>RemoteDroid Web Client</title>
         <link type="text/css" href="styles.css" rel="stylesheet" />
         <script src="jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="YUVWebGLCanvas.js"></script>
         <script type="text/javascript" src="Player.js"></script>
         <script type="text/javascript" src="Decoder.js"></script>
         <script type="text/javascript" src="raw.h264.js"></script>
+
        <!-- <script src="jquery/jquery-ui.js"></script> -->
     </head>
     <script type="text/javascript">
@@ -28,7 +30,7 @@
             localStorage['url'] = url;
             console.log("Creating websocket connection");
             ws = new WebSocket("ws://" + url);
-
+            ws.binaryType = "arraybuffer";
             var rawRenderer;
 
             ws.onopen = function(event) {
@@ -38,17 +40,15 @@
             };
 
             ws.onmessage = function(event) {
-                if (event.data.size > 25) {
                     rawRenderer.render(event.data);
-                }
-                // console.log("data received = " + JSON.stringify(event.data, null, 4));
-                // console.log("string = " + event.data);
             };
 
             ws.onclose = function() {
                 console.log("disconnected");
             };
         };
+        
+        
     </script>
     <body>
         <input id="addressInput" type="text" value="" ></input>

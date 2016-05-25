@@ -1,17 +1,8 @@
 // universal module definition
 (function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define([], factory);
-    } else if (typeof exports === 'object') {
-        // Node. Does not work with strict CommonJS, but
-        // only CommonJS-like environments that support module.exports,
-        // like Node.
-        module.exports = factory();
-    } else {
-        // Browser globals (root is window)
+
         root.YUVWebGLCanvas = factory();
-    }
+    
 }(this, function () {
   
   // --------------- imported from sylvester.js
@@ -742,6 +733,7 @@
         this.VTexture.bind(2, this.program, "VTexture");
       },
       fillYUVTextures: function(y, u, v) {
+    	  console.log("fill");
         this.YTexture.fill(y);
         this.UTexture.fill(u);
         this.VTexture.fill(v);

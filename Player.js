@@ -24,18 +24,9 @@ p.decode(<binary>);
 
 // universal module definition
 (function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define(["./Decoder", "./YUVWebGLCanvas"], factory);
-    } else if (typeof exports === 'object') {
-        // Node. Does not work with strict CommonJS, but
-        // only CommonJS-like environments that support module.exports,
-        // like Node.
-        module.exports = factory(require("./Decoder"), require("./YUVWebGLCanvas"));
-    } else {
-        // Browser globals (root is window)
+ 
         root.Player = factory(root.Decoder, root.YUVWebGLCanvas);
-    }
+    
 }(this, function (Decoder, YUVWebGLCanvas) {
   "use strict";
   
@@ -117,11 +108,12 @@ p.decode(<binary>);
         lastHeight = height;
         self._size = new Size(width, height);
         self.webGLCanvas = new YUVWebGLCanvas(self.canvas, self._size);
+        
       };
       
       var lumaSize = width * height;
       var chromaSize = lumaSize >> 2;
-      
+  
       self.webGLCanvas.YTexture.fill(buffer.subarray(0, lumaSize));
       self.webGLCanvas.UTexture.fill(buffer.subarray(lumaSize, lumaSize + chromaSize));
       self.webGLCanvas.VTexture.fill(buffer.subarray(lumaSize + chromaSize, lumaSize + 2 * chromaSize));
